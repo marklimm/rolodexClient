@@ -1,0 +1,49 @@
+import React, { Component } from 'react';
+
+import { connect } from 'react-redux'
+
+import { changeAuthenticatedTo } from '../../actions/index'
+
+import { Link } from 'react-router'
+
+
+class SignInButton extends Component {
+
+    render() {
+
+        if (this.props.accessToken) {
+            return (
+                <button
+                    onClick={() => this.props.changeAuthenticatedTo(false)}>
+                    Sign Out
+                </button>
+            )
+        }
+
+        return <button onClick={() => this.props.changeAuthenticatedTo(true)}>Sign In</button>;
+    }
+
+}
+
+
+
+function mapStateToProps(state) {
+    return {
+        accessToken: state.accessToken
+    }
+}
+
+
+//function mapDispatchToProps(dispatch){
+//    return bindActionCreators({ fetchPosts }, dispatch);
+//}
+//export default connect(null, mapDispatchToProps)(SignInButton)
+
+
+//  a shortcut in contrast to the above code for wiring up the fetchPosts action creator to this container
+//export default connect(null, { fetchPosts: fetchPosts })(SignInButton)
+
+
+export default connect(mapStateToProps, { changeAuthenticatedTo })(SignInButton)
+//export default SignInButton;
+

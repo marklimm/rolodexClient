@@ -1,0 +1,49 @@
+div#flexContainer {
+  display: flex;
+  flex-flow: row wrap;
+  /* We tell all items to be 100% width */
+  /* Medium screens */
+  /* Large screens */
+}
+div#flexContainer #divHeader,
+div#flexContainer #divSidebar,
+div#flexContainer #divContent {
+  flex: 1 100%;
+  padding: 10px;
+}
+@media all and (min-width: 600px) {
+  div#flexContainer {
+    /* We tell both sidebars to share a row */
+  }
+  div#flexContainer #divSidebar {
+    flex: 1 auto;
+  }
+}
+@media all and (min-width: 800px) {
+  div#flexContainer {
+    /* We invert order of first sidebar and main
+     * And tell the main element to take twice as much width as the other two sidebars
+     */
+  }
+  div#flexContainer #divContent {
+    flex: 5 0px;
+  }
+}
+div#flexContainer div#divHeader {
+  background-color: skyblue;
+  order: 1;
+}
+div#flexContainer div#divHeader span#testName {
+  color: red;
+}
+div#flexContainer div#divSidebar {
+  background-color: #b4b472;
+  order: 2;
+}
+div#flexContainer div#divContent {
+  background-color: #dddddd;
+  order: 3;
+}
+.error {
+  color: red;
+}
