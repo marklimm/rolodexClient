@@ -39,13 +39,3 @@ fieldset[disabled] .btn-rolodexGreen.active {
   color: #99BF1A;
   background-color: #FFFFFF;
 }
-div.userForm form {
-  width: 50%;
-}
-ul#ulSidebar a.nav-link {
-  color: #99BF1A;
-}
-ul#ulSidebar a.nav-link.active {
-  color: #ffffff;
-  background-color: #99BF1A ;
-}

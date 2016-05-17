@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-
+import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
 
-class HomePageView extends Component {
+class DashboardView extends Component {
 //export default () => {
 
     //
@@ -14,7 +14,23 @@ class HomePageView extends Component {
     //    this.props.fetchPeople();
     //}
     //
-    //
+
+
+    renderUserGreeting(){
+
+        if(this.props.currentUser){
+
+
+            return (
+                <label>Welcome {this.props.currentUser.email}!</label>
+            );
+        }
+        else{
+            return (<label>Welcome!</label>)
+        }
+
+    }
+
     //renderPeopleList() {
     //
     //    if(!this.props.people){
@@ -50,13 +66,10 @@ class HomePageView extends Component {
                 <div>
 
 
+                    { this.renderUserGreeting() }
 
-                    <nav>
-                        <Link to='/person'>People</Link>
-
-
-                    </nav>
-
+                    <br /><br />
+                    From the left-hand menu, you'll be able to access various features of the site
 
 
                 </div>
@@ -69,6 +82,13 @@ class HomePageView extends Component {
 }
 
 
+function mapStateToProps(state) {
 
-export default HomePageView;
+    return {
+        currentUser: state.auth.currentUser
+    }
+}
+
+export default connect(mapStateToProps, null)(DashboardView)
+
 

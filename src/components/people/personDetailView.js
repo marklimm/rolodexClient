@@ -51,9 +51,6 @@ class PersonDetail extends Component {
             // Display a success toast, with a title
             toastr.success(this.state.firstName + ' ' + this.state.lastName + ' has been saved', 'Save Completed')
 
-
-            //  send out another action here to set saveStatus to null?  Then I could create an if-else statement after this to clear out the saveConfirmMessage..  maybe 'saveConfirmMessage' shouldn't be a state variable?  set some flags to specify when the animation is currently happening (if necessary)?
-
         }
 
     }
@@ -77,13 +74,16 @@ class PersonDetail extends Component {
 
         toastr.options.onShown = function() {
             console.log('toastr has been shown');
+
+
+            //  clearing the saveStatus state property is necessary to make sure the save confirmation message appears the 2nd time that the user Saves
+            self.props.clearSaveStatus();
         }
 
         toastr.options.onHidden = function() {
             console.log('toastr has been hidden');
 
-            //  clearing the saveStatus state property is necessary to make sure the save confirmation message appears the 2nd time that the user Saves
-            self.props.clearSaveStatus();
+
         }
 
         toastr.options.onclick = function(){

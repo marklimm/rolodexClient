@@ -6,8 +6,8 @@ import { browserHistory } from 'react-router'
 import { AUTH_USER, AUTH_ERROR, UNAUTH_USER, FETCH_PEOPLE, FETCH_PERSON, UPDATE_PERSON, CLEAR_SAVE_STATUS } from './types'
 
 
-
 const ROLODEX_API_URL = 'http://localhost:3000/api';
+//const ROLODEX_API_URL = 'https://rolodexapi.herokuapp.com/api';
 
 //const API_KEY = '?key=marklimm';
 
@@ -128,7 +128,7 @@ export function signinUser({ email, password }){
                 //  success = server responds 200 response
 
                 //  update state to indicate user is authenticated
-                dispatch({ type: AUTH_USER })
+                dispatch({ type: AUTH_USER, payload: response.data })
 
                 //  we are using redux thunk here because we want to take additional actions in addition to just updating our state (by sending down to the reducer)
 
@@ -136,6 +136,8 @@ export function signinUser({ email, password }){
                 //  save the JWT token
                 //  and when it's time to log the user out, we simply remove this item from localStorage
                 localStorage.setItem('token', response.data.token)
+
+                //  save additional user fields into localStorage here?
 
 
                 //  redirect user to route '/feature'
@@ -190,7 +192,7 @@ export function signupUser({ email, password }){
                 //  success = server responds 200 response
 
                 //  update state to indicate user is authenticated
-                dispatch({ type: AUTH_USER })
+                dispatch({ type: AUTH_USER, payload: response.data })
 
                 //  we are using redux thunk here because we want to take additional actions in addition to just updating our state (by sending down to the reducer)
 

@@ -8,7 +8,7 @@ export default function(state = {}, action){
         case AUTH_USER:
 
             //  return all of our existing state, and specify that authenticated = true
-            return { ...state, authenticated: true, error: null };
+            return { ...state, authenticated: true, error: null, currentUser: action.payload };
 
         case UNAUTH_USER:
 

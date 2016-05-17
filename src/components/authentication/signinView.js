@@ -32,6 +32,10 @@ class SignIn extends Component {
         const { handleSubmit, fields: { email, password }} = this.props;
 
         return (
+
+
+            <div className='userForm'>
+
             <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
                 <fieldset className='form-group'>
                     <label>Email:</label>
@@ -45,9 +49,12 @@ class SignIn extends Component {
 
                 { this.renderAlert() }
 
-                <button action='submit' className='btn btn-primary'>Sign in</button>
+                <button action='submit' className='btn btn-rolodexGreen'>Sign in</button>
 
             </form>
+
+            </div>
+
         )
 
     }

@@ -5,7 +5,7 @@ import { createStore, applyMiddleware } from 'redux';
 
 
 //  using react-router
-import { Router, browserHistory } from 'react-router';
+import { Router, browserHistory, hashHistory } from 'react-router';
 
 import reduxThunk from 'redux-thunk'
 
