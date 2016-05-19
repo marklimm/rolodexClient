@@ -35,7 +35,7 @@ class RegisterView extends Component {
                 <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
                     <fieldset className='form-group'>
                         <label>Email:</label>
-                        <input {...email } className='form-control'/>
+                        <input {...email } className='form-control' placeholder="Email" />
 
                         { email.touched && email.error && <div className='error'>{ email.error }</div> }
 
@@ -43,13 +43,13 @@ class RegisterView extends Component {
 
                     <fieldset className='form-group'>
                         <label>Password:</label>
-                        <input {...password } className='form-control' type='password'/>
+                        <input {...password } className='form-control' type='password' placeholder="Password" />
                         { password.touched && password.error && <div className='error'>{ password.error }</div> }
                     </fieldset>
 
                     <fieldset className='form-group'>
                         <label>Confirm Password:</label>
-                        <input {...passwordConfirm } className='form-control' type='password'/>
+                        <input {...passwordConfirm } className='form-control' type='password' placeholder="Password" />
 
                         { passwordConfirm.touched && passwordConfirm.error &&
                         <div className='error'>{ passwordConfirm.error }</div> }
@@ -57,7 +57,7 @@ class RegisterView extends Component {
 
                     { this.renderAlert() }
 
-                    <button action='submit' className='btn btn-primary'>Sign up</button>
+                    <button action='submit' className='btn btn-rolodexGreen'>Sign up</button>
 
                 </form>
             </div>
@@ -78,6 +78,10 @@ function validate(formProps) {
     if (!formProps.email) {
         errors.email = 'Please enter an email'
     }
+    else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formProps.email)) {
+        errors.email = 'Please enter a valid email address'
+    }
+
 
     if (!formProps.password) {
         errors.password = 'Please enter a password'

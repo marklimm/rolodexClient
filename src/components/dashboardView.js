@@ -16,18 +16,14 @@ class DashboardView extends Component {
     //
 
 
-    renderUserGreeting(){
+    renderUserGreeting() {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-        if(this.props.currentUser){
 
+        return (
+            <label>Welcome {currentUser.email}!</label>
+        );
 
-            return (
-                <label>Welcome {this.props.currentUser.email}!</label>
-            );
-        }
-        else{
-            return (<label>Welcome!</label>)
-        }
 
     }
 

@@ -8,6 +8,8 @@ import DashboardView from './components/dashboardView';
 
 import PeopleIndexView from './components/people/peopleIndexView';
 import PersonDetailView from './components/people/personDetailView';
+import PersonInsertView from './components/people/personInsertView';
+
 
 
 import EventIndexView from './components/event/eventIndexView';
@@ -17,7 +19,7 @@ import SignInView from './components/authentication/signinView';
 import SignOutView from './components/authentication/signoutView';
 import RegisterView from './components/authentication/registerView';
 
-import Sidebar from './components/sidebars/sidebar'
+import Sidebar from './components/sidebar'
 
 import requireAuth from './components/hoc/require_authentication'
 import { AUTH_USER } from './actions/types'
@@ -30,6 +32,13 @@ const Greeting = () => {
 //  IndexRoute is a default route ... rendering what should display in the "placeholder" (this.children.props) when the user goes to the default/index route.  If the user specifies a different route then the other routes are used
 
 //<Route path='person/team/:teamid' component={PersonDetailView} />
+
+/*
+*   this works, just doesn't work with the active className
+ <Route path='/person' components={{main: requireAuth(PeopleIndexView), sidebar: Sidebar}} />
+ <Route path='/person/:id' components={{main: requireAuth(PersonDetailView), sidebar: Sidebar}} />
+
+ */
 export default (
 
     <Route path='/' component={App}>
@@ -38,8 +47,18 @@ export default (
 
         <Route path='/dashboard' components={{main: requireAuth(DashboardView), sidebar: Sidebar}} />
 
-        <Route path='/person' components={{main: requireAuth(PeopleIndexView), sidebar: Sidebar}} />
-        <Route path='/person/:id' components={{main: requireAuth(PersonDetailView), sidebar: Sidebar}} />
+
+
+        <Route path='/person'>
+            <IndexRoute components={{main: requireAuth(PeopleIndexView), sidebar: Sidebar}} />
+            <Route path=':id' components={{main: requireAuth(PersonDetailView), sidebar: Sidebar}} />
+
+            <Route path='createnew' components={{main: requireAuth(PersonInsertView), sidebar: Sidebar}} />
+        </Route>
+
+
+
+
 
         <Route path='/event' components={{main: requireAuth(EventIndexView), sidebar: Sidebar}} />
 

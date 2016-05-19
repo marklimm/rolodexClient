@@ -29,6 +29,7 @@ export default function (state = INITIAL_STATE, action) {
         case UPDATE_PERSON:
 
             if (action.payload.data.success) {
+
                 return {
                     ...state, saveStatus: 'success'
                 }

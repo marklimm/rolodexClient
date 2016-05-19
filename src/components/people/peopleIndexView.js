@@ -12,7 +12,7 @@ class PeopleIndex extends Component {
 
 
     componentWillMount() {
-        console.log('this would be a good time to call an action creator to fetch posts');
+        console.log('peopleindexview - component will mount');
 
 
         this.props.fetchPeople();
@@ -63,11 +63,23 @@ class PeopleIndex extends Component {
         //
         return (
             <div>
-                <h3>People</h3>
 
-                <div>
+
+
+
+                <Link to='/person/createnew' >Create a new person</Link>
+
+
+                <div style={{paddingTop: '25px'}}>
                     { this.renderPeopleList() }
                 </div>
+
+
+
+
+
+
+
 
             </div>
 

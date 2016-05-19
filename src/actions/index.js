@@ -7,7 +7,6 @@ import { AUTH_USER, AUTH_ERROR, UNAUTH_USER, FETCH_PEOPLE, FETCH_PERSON, UPDATE_
 
 
 const ROLODEX_API_URL = 'http://localhost:3000/api';
-//const ROLODEX_API_URL = 'https://rolodexapi.herokuapp.com/api';
 
 //const API_KEY = '?key=marklimm';
 
@@ -64,8 +63,7 @@ export function fetchPerson(id) {
     }
 }
 
-export function updatePerson(personId, personFields){
-
+export function updatePerson(personId, personFields) {
 
     const returnedPromise = axios.put(
         `${ROLODEX_API_URL}/people/` + personId,
@@ -128,7 +126,7 @@ export function signinUser({ email, password }){
                 //  success = server responds 200 response
 
                 //  update state to indicate user is authenticated
-                dispatch({ type: AUTH_USER, payload: response.data })
+                dispatch({ type: AUTH_USER })
 
                 //  we are using redux thunk here because we want to take additional actions in addition to just updating our state (by sending down to the reducer)
 
@@ -138,7 +136,7 @@ export function signinUser({ email, password }){
                 localStorage.setItem('token', response.data.token)
 
                 //  save additional user fields into localStorage here?
-
+                localStorage.setItem('currentUser', JSON.stringify(response.data))
 
                 //  redirect user to route '/feature'
                 browserHistory.push('/dashboard')
@@ -192,13 +190,15 @@ export function signupUser({ email, password }){
                 //  success = server responds 200 response
 
                 //  update state to indicate user is authenticated
-                dispatch({ type: AUTH_USER, payload: response.data })
+                dispatch({ type: AUTH_USER })
 
                 //  we are using redux thunk here because we want to take additional actions in addition to just updating our state (by sending down to the reducer)
 
 
                 //  save the JWT token
                 localStorage.setItem('token', response.data.token)
+                localStorage.setItem('currentUser', JSON.stringify(response.data))
+
 
                 //  redirect user to route '/feature'
                 browserHistory.push('/dashboard')
