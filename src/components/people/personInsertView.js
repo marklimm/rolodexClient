@@ -1,185 +1,158 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom'
-
-import { connect } from 'react-redux'
-import { fetchPerson, updatePerson, clearSaveStatus } from '../../actions/index'
-
-//import { Link } from 'react-router'
-
+import { reduxForm } from 'redux-form'
+import * as actions from '../../actions'
 
 
 class PersonInsertView extends Component {
-//export default () => {
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            firstName: '',
-            lastName: '',
-            description: '',
-            tags: [],
-
-
-        }
-    }
 
     componentWillMount() {
 
+    }
 
-        //this.props.fetchPerson(this.props.params.id);
+
+    componentDidMount(){
+        //  call only on initial render
+
+
+
     }
 
 
     componentWillReceiveProps(nextProps) {
 
-        //const { selectedPerson, saveStatus } = nextProps;
-        //
-        //if(!this.state.firstName){
-        //    //  not sure if this is the best way, but if state hasn't been set yet, set it.  This is because this event handler gets called on the initial load to populate the person and again when "Save" is clicked.  The alternative would be to have the PUT /person API route return the properties of the person and that gets fed into here
-        //    this.setState({
-        //        firstName: selectedPerson.firstName,
-        //        lastName: selectedPerson.lastName,
-        //        description: selectedPerson.description
-        //    })
-        //
-        //}
+        //const { saveStatus } = nextProps;
         //
         //if(saveStatus === 'success') {
-        //
         //    // Display a success toast, with a title
-        //    toastr.success(this.state.firstName + ' ' + this.state.lastName + ' has been saved', 'Save Completed')
+        //    toastr.success(nextProps.values.firstName + ' ' + nextProps.values.lastName + ' has been saved', 'Save Completed')
+        //
+        //
         //
         //}
 
-    }
 
-    componentDidMount(){
-        //  call only on initial render
-
-console.log('personinserview componentdid mount')
 
     }
+
 
     componentDidUpdate(prevProps, prevState){
         //  called everytime other than the initial render
 
     }
 
-    onFormSubmit2(event) {
-
-        debugger;
-        event.preventDefault();
+    handleFormSubmit(formProps, dispatch) {
 
 
-        //const personId = this.props.selectedPerson._id;
-        //
-        //
-        //
-        //this.props.updatePerson(personId, {
-        //    firstName: this.state.firstName,
-        //    lastName: this.state.lastName,
-        //    description: this.state.description
-        //});
+        //console.log(formProps.email, formProps.password)
 
+        this.props.insertPerson(formProps, dispatch);
+    }
+
+    renderAlert() {
+        if (this.props.errorMessage) {
+            return (
+                <div className='alert alert-danger'>
+                    <strong>Oops!</strong> { this.props.errorMessage}
+                </div>
+            )
+        }
     }
 
 
-    renderPersonCreateForm() {
 
+    render() {
 
-//onSubmit={this.onFormSubmit2.bind(this)}
+        //  these are all properties that come from redux form
+        const { handleSubmit, submitting, resetForm, pristine, fields: { firstName, lastName, description }} = this.props;
+
         return (
-            <div>
 
-                <h3>Create a new person</h3>
+            <div >
+                <h3>{firstName.value} {lastName.value}</h3>
+                <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
+                    <fieldset className='form-group'>
+                        <label>First Name:</label>
+                        <input {...firstName } className='form-control' placeholder="First Name"
+                            />
 
+                        { firstName.touched && firstName.error && <div className='error'>{ firstName.error }</div> }
 
+                    </fieldset>
 
+                    <fieldset className='form-group'>
+                        <label>Last Name:</label>
+                        <input {...lastName } className='form-control' placeholder="Last Name" />
+                        { lastName.touched && lastName.error && <div className='error'>{ lastName.error }</div> }
+                    </fieldset>
 
-                    <div className="form-group row">
-                        <label className="col-sm-2 form-control-label">First Name</label>
+                    <fieldset className='form-group'>
+                        <label>Description:</label>
 
-                        <div className="col-sm-10">
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="inputFN"
-                                placeholder="First Name"
-                                value={this.state.firstName}
-                                onChange={event => { this.setState({ firstName: event.target.value });  } }
-                                />
-                        </div>
-                    </div>
-
-                    <div className="form-group row">
-                        <label className="col-sm-2 form-control-label">Last Name</label>
-
-                        <div className="col-sm-10">
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="inputFN"
-                                placeholder="Last Name"
-                                value={this.state.lastName}
-                                onChange={event => { this.setState({ lastName: event.target.value });  } }
-                                />
-                        </div>
-                    </div>
+                        <textarea
+                            className="form-control"
+                            {...description }
+                            placeholder="Description"
 
 
-                    <div className="form-group row">
-                        <label className="col-sm-2 form-control-label">Description</label>
+                            // required for reset form to work (only on textarea's)
+                            // see: https://github.com/facebook/react/issues/2533
+                            value={description.value || ''}
+
+                            />
 
 
-                        <div className="col-sm-10">
-                            <textarea
-                                className="form-control"
-                                id="inputDescription"
-                                placeholder="Description"
-                                value={this.state.description}
-                                onChange={event => { this.setState({ description: event.target.value });  } }
-                                />
-                        </div>
-                    </div>
+                    </fieldset>
+
+                    { this.renderAlert() }
+
+                    <button action='submit' className='btn btn-primary' disabled={submitting}>Save</button>
 
 
-
-                    <div className="form-group row">
-                        <div className="col-sm-offset-2 col-sm-10">
-                            <button type="submit" className="btn btn-primary" onClick={event => this.onFormSubmit2}>Save</button>
-                        </div>
-                    </div>
-
-
-
+                </form>
             </div>
 
         )
     }
 
+}
 
-    render() {
+
+function validate(formProps) {
+    //  our validation function that we pass to reduxForm
+
+    const errors = {};
+
+    //console.log(formProps)
 
 
-        return (
-            <div>
-                { this.renderPersonCreateForm() }
-
-            </div>
-
-        );
+    if (!formProps.firstName) {
+        errors.firstName = 'Please enter first name'
     }
 
+    if (!formProps.lastName) {
+        errors.lastName = 'Please enter last name'
+    }
+
+    //  always return the errors object
+    return errors;
 }
+
 
 function mapStateToProps(state) {
-
     return {
-    };
+        //saveStatus: state.people.saveStatus
+
+    }
 }
 
 
-export default connect(mapStateToProps, {clearSaveStatus, fetchPerson, updatePerson })(PersonInsertView);
+//  1st parameter is options, 2nd is state coming into this component, 3rd parameter is the actions for action creators (being triggered from this component)
+export default reduxForm({
+    form: 'addPerson', //  the name of the form
+    fields: ['firstName', 'lastName', 'description'],
+    validate
+}, mapStateToProps, actions)(PersonInsertView)
+
+
 
 

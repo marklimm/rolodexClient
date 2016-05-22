@@ -10,14 +10,6 @@ class PersonDetailView extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            firstName: '',
-            lastName: '',
-            description: '',
-            tags: [],
-
-
-        }
     }
 
 
@@ -68,10 +60,9 @@ class PersonDetailView extends Component {
 
     componentWillReceiveProps(nextProps) {
 
-        const { selectedPerson, saveStatus } = nextProps;
+        const { saveStatus } = nextProps;
 
         if(saveStatus === 'success') {
-debugger;
             // Display a success toast, with a title
             toastr.success(nextProps.values.firstName + ' ' + nextProps.values.lastName + ' has been saved', 'Save Completed')
 
@@ -88,7 +79,7 @@ debugger;
 
         //console.log(formProps.email, formProps.password)
 
-        this.props.updatePerson(this.props.params.id, formProps, dispatch);
+        this.props.updatePerson(this.props.params.id, formProps);
     }
 
     renderAlert() {
@@ -101,7 +92,17 @@ debugger;
         }
     }
 
+    deletePerson(){
 
+        const { firstName, lastName } = this.props.values
+
+        if(confirm('Are you sure that you want to delete ' + firstName + ' ' + lastName + '?')){
+
+            this.props.deletePerson(this.props.params.id)
+        }
+
+
+    }
 
 
 
@@ -113,7 +114,7 @@ debugger;
         return (
 
             <div >
-
+                <h3>{firstName.value} {lastName.value}</h3>
                 <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
                     <fieldset className='form-group'>
                         <label>First Name:</label>
@@ -155,6 +156,10 @@ debugger;
                     &nbsp; &nbsp;
                     <button type="button" className='btn btn-info' disabled={pristine} onClick={resetForm}>
                         Reset
+                    </button>
+
+                    <button type="button" className='pull-xs-right btn btn-danger' onClick={this.deletePerson.bind(this)}>
+                        Delete
                     </button>
 
                 </form>

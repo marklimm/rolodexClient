@@ -3,10 +3,11 @@ import _ from 'lodash';
 
 import { browserHistory } from 'react-router'
 
-import { AUTH_USER, AUTH_ERROR, UNAUTH_USER, FETCH_PEOPLE, FETCH_PERSON, UPDATE_PERSON, CLEAR_SAVE_STATUS } from './types'
+import { AUTH_USER, AUTH_ERROR, UNAUTH_USER, FETCH_PEOPLE, FETCH_PERSON, UPDATE_PERSON, INSERT_PERSON, DELETE_PERSON, CLEAR_SAVE_STATUS } from './types'
 
 
 const ROLODEX_API_URL = 'http://localhost:3000/api';
+
 
 //const API_KEY = '?key=marklimm';
 
@@ -52,7 +53,12 @@ export function fetchPeople() {
 
 export function fetchPerson(id) {
 
-    const returnedPromise = axios.get(`${ROLODEX_API_URL}/people/${id}`);
+    const returnedPromise = axios.get(
+        `${ROLODEX_API_URL}/people/${id}`,
+        {
+            headers: {authorization: localStorage.getItem('token')}
+        }
+    );
 
     //const selectedPerson = _.find(peopleArr, function(o) { return o.id === parseInt(id); });
     //const selectedPerson = _.find(peopleArr, (o) => o.id === parseInt(id));
@@ -70,7 +76,11 @@ export function updatePerson(personId, personFields) {
         {
             firstName: personFields.firstName,
             lastName: personFields.lastName,
-            description: personFields.description
+            description: personFields.description,
+
+        },
+        {
+            headers: {authorization: localStorage.getItem('token')}
         }
     );
 
@@ -78,6 +88,130 @@ export function updatePerson(personId, personFields) {
         type: UPDATE_PERSON,
         payload: returnedPromise
     }
+}
+
+export function insertPerson(personFields) {
+
+
+    return function(dispatch){
+
+
+        const insertPersonPromise = axios.post(
+            `${ROLODEX_API_URL}/people`,
+            {
+                firstName: personFields.firstName,
+                lastName: personFields.lastName,
+                description: personFields.description
+            },
+            {
+                headers: {authorization: localStorage.getItem('token')}
+            }
+        );
+
+
+
+        insertPersonPromise
+            .then(response => {
+                //  success = server responds 200 response
+
+                //  update state to indicate user is authenticated
+                dispatch({
+                    type: INSERT_PERSON,
+                    payload: response
+                })
+
+
+                browserHistory.push('/person')
+            })
+            .catch(response => {
+                //  fail = server returned something other than 200, like (400 bad request or 401 unauthorized for example)
+
+                //  calling the below action creator.  So this is the signinUser action creator calling another action creator
+                dispatch({
+                    type: INSERT_PERSON,
+                    payload: response
+                })
+
+            })
+
+    }
+    //
+    //const returnedPromise = axios.post(
+    //    `${ROLODEX_API_URL}/people/`,
+    //    {
+    //        firstName: personFields.firstName,
+    //        lastName: personFields.lastName,
+    //        description: personFields.description
+    //    },
+    //    {
+    //        headers: {authorization: localStorage.getItem('token')}
+    //    }
+    //);
+    //
+    //return {
+    //    type: INSERT_PERSON,
+    //    payload: returnedPromise
+    //}
+}
+
+
+export function deletePerson(personId) {
+
+
+    return function(dispatch){
+
+
+        const deletePersonPromise = axios.delete(
+            `${ROLODEX_API_URL}/people/` + personId,
+            {
+                headers: {authorization: localStorage.getItem('token')}
+            }
+        );
+
+
+
+        deletePersonPromise
+            .then(response => {
+                //  success = server responds 200 response
+
+                //  update state to indicate user is authenticated
+                dispatch({
+                    type: DELETE_PERSON,
+                    payload: response
+                })
+
+
+                browserHistory.push('/person')
+            })
+            .catch(response => {
+                //  fail = server returned something other than 200, like (400 bad request or 401 unauthorized for example)
+
+
+                dispatch({
+                    type: DELETE_PERSON,
+                    payload: response
+                })
+
+            })
+
+    }
+    //
+    //const returnedPromise = axios.post(
+    //    `${ROLODEX_API_URL}/people/`,
+    //    {
+    //        firstName: personFields.firstName,
+    //        lastName: personFields.lastName,
+    //        description: personFields.description
+    //    },
+    //    {
+    //        headers: {authorization: localStorage.getItem('token')}
+    //    }
+    //);
+    //
+    //return {
+    //    type: INSERT_PERSON,
+    //    payload: returnedPromise
+    //}
 }
 
 export function clearSaveStatus(){
@@ -212,28 +346,3 @@ export function signupUser({ email, password }){
 
     }
 }
-
-
-//export function createPost(props){
-//
-//    //  contents of the form (that was submitted) are in props
-//
-//    const returnedPromise = axios.post(`${ROLODEX_API_URL}/posts${API_KEY}`, props);
-//
-//
-//    return {
-//        type: CREATE_POST,
-//        payload: returnedPromise
-//    }
-//}
-//
-//export function deletePost(id) {
-//
-//    const returnedPromise = axios.delete(`${ROLODEX_API_URL}/posts/${id}${API_KEY}`);
-//
-//
-//    return {
-//        type: DELETE_POST,
-//        payload: returnedPromise
-//    }
-//}

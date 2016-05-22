@@ -33,7 +33,7 @@ class PeopleIndex extends Component {
                 <div key={person._id}>
 
                     <Link to={`person/${person._id}`}>
-                        <span className='pull-xs-right'>pulled right</span>
+
                         <strong>{person.fullName}</strong>
                     </Link>
 

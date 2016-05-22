@@ -1,4 +1,4 @@
-import { CLEAR_SAVE_STATUS, FETCH_PEOPLE, FETCH_PERSON, UPDATE_PERSON } from '../actions/types'
+import { CLEAR_SAVE_STATUS, FETCH_PEOPLE, FETCH_PERSON, UPDATE_PERSON, INSERT_PERSON, DELETE_PERSON } from '../actions/types'
 
 
 const INITIAL_STATE = {
@@ -37,6 +37,38 @@ export default function (state = INITIAL_STATE, action) {
             else {
                 return {
                     ...state, saveStatus: 'error'
+                }
+            }
+
+        case INSERT_PERSON:
+
+            if (action.payload.data.success) {
+
+                return {
+                    //...state, saveStatus: 'success'
+                    ...state
+                }
+            }
+            else {
+                return {
+                    ...state
+                    //, saveStatus: 'error'
+                }
+            }
+
+        case DELETE_PERSON:
+
+            if (action.payload.data.success) {
+
+                return {
+                    //...state, saveStatus: 'success'
+                    ...state
+                }
+            }
+            else {
+                return {
+                    ...state
+                    //, saveStatus: 'error'
                 }
             }
 

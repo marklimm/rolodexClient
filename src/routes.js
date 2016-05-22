@@ -39,6 +39,8 @@ const Greeting = () => {
  <Route path='/person/:id' components={{main: requireAuth(PersonDetailView), sidebar: Sidebar}} />
 
  */
+
+//
 export default (
 
     <Route path='/' component={App}>
@@ -51,9 +53,8 @@ export default (
 
         <Route path='/person'>
             <IndexRoute components={{main: requireAuth(PeopleIndexView), sidebar: Sidebar}} />
-            <Route path=':id' components={{main: requireAuth(PersonDetailView), sidebar: Sidebar}} />
-
             <Route path='createnew' components={{main: requireAuth(PersonInsertView), sidebar: Sidebar}} />
+            <Route path=':id' components={{main: requireAuth(PersonDetailView), sidebar: Sidebar}} />
         </Route>
 
 
